@@ -21,7 +21,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
-/* $XFree86: xc/lib/Xv/Xvlibint.h,v 1.6 2002/10/16 00:37:33 dawes Exp $ */
+/* $XFree86$ */
 
 #ifndef XVLIBINT_H
 #define XVLIBINT_H

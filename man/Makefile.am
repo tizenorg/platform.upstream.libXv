@@ -1,4 +1,3 @@
-# 
 #  Copyright 2005  Red Hat, Inc.
 # 
 #  Permission to use, copy, modify, distribute, and sell this software and its
@@ -7,9 +6,9 @@
 #  copyright notice and this permission notice appear in supporting
 #  documentation, and that the name of Red Hat not be used in
 #  advertising or publicity pertaining to distribution of the software without
-#  specific, written prior permission.  Red Hat makes no
-#  representations about the suitability of this software for any purpose.  It
-#  is provided "as is" without express or implied warranty.
+#  specific, written prior permission.  Red Hat makes no representations about
+#  the suitability of this software for any purpose.  It is provided "as is" without
+#  express or implied warranty.
 # 
 #  RED HAT DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
 #  INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO
@@ -18,11 +17,27 @@
 #  DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
 #  TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 #  PERFORMANCE OF THIS SOFTWARE.
+#
 
-SUBDIRS = src man
-
-pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = xv.pc
-
-EXTRA_DIST = xv.pc.in autogen.sh
-
+man_MANS = \
+         Xv.3 \
+         XvFreeAdaptorInfo.3 \
+         XvFreeEncodingInfo.3 \
+         XvGetPortAttribute.3 \
+         XvGetStill.3 \
+         XvGetVideo.3 \
+         XvGrabPort.3 \
+         XvPortNotify.3 \
+         XvPutStill.3 \
+         XvPutVideo.3 \
+         XvQueryAdaptors.3 \
+         XvQueryBestSize.3 \
+         XvQueryEncodings.3 \
+         XvQueryExtension.3 \
+         XvSelectPortNotify.3 \
+         XvSelectVideoNotify.3 \
+         XvSetPortAttribute.3 \
+         XvStopVideo.3 \
+         XvUngrabPort.3 \
+         XvVideoNotify.3
+EXTRA_DIST = $(man3_MANS)

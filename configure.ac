@@ -41,4 +41,5 @@ AC_SUBST(DEP_LIBS)
 		  
 AC_OUTPUT([Makefile
 	   src/Makefile
+	   man/Makefile
            xv.pc])

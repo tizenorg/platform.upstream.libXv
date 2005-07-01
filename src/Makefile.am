@@ -1,6 +1,6 @@
 lib_LTLIBRARIES = libXv.la
 
-libXv_la_SOURCES = \ 
+libXv_la_SOURCES = \
          Xv.c \
          Xvlibint.h
 

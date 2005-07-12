@@ -40,4 +40,4 @@ man_MANS = \
          XvStopVideo.3 \
          XvUngrabPort.3 \
          XvVideoNotify.3
-EXTRA_DIST = $(man3_MANS)
+EXTRA_DIST = $(man_MANS)

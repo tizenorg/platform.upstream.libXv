@@ -19,7 +19,7 @@
 #  TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 #  PERFORMANCE OF THIS SOFTWARE.
 
-SUBDIRS = src man
+SUBDIRS = src man include
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = xv.pc

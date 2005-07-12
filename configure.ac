@@ -39,6 +39,9 @@ AC_SUBST(DEP_CFLAGS)
 AC_SUBST(DEP_LIBS)
 		  
 AC_OUTPUT([Makefile
+           include/Makefile
+	   include/X11/Makefile
+	   include/X11/extensions/Makefile
 	   src/Makefile
 	   man/Makefile
            xv.pc])

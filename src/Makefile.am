@@ -7,4 +7,4 @@ libXv_la_SOURCES = \
 libXv_la_LIBADD = @DEP_LIBS@
 AM_CFLAGS = @DEP_CFLAGS@ -I$(top_srcdir)/include
 
-libXv_la_LDFLAGS = -version-info 1:0:0 -no-undefined
+libXv_la_LDFLAGS = -version-number 1:0:0 -no-undefined

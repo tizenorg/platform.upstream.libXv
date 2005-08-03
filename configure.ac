@@ -33,10 +33,10 @@ AC_PROG_CC
 AC_PROG_LIBTOOL
 
 # Check for dependencies
-PKG_CHECK_MODULES(DEP, x11 xext xextproto videoproto)
+PKG_CHECK_MODULES(XV, x11 xext xextproto videoproto)
 
-AC_SUBST(DEP_CFLAGS)
-AC_SUBST(DEP_LIBS)
+AC_SUBST(XV_CFLAGS)
+AC_SUBST(XV_LIBS)
 		  
 XORG_RELEASE_VERSION
 

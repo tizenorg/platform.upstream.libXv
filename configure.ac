@@ -1,3 +1,5 @@
+dnl  $Id$
+dnl
 dnl  Copyright 2005 Red Hat, Inc.
 dnl 
 dnl  Permission to use, copy, modify, distribute, and sell this software and its
@@ -38,6 +40,7 @@ PKG_CHECK_MODULES(XV, x11 xext xextproto videoproto)
 AC_SUBST(XV_CFLAGS)
 AC_SUBST(XV_LIBS)
 		  
+XORG_MANPAGE_SECTIONS
 XORG_RELEASE_VERSION
 
 AC_OUTPUT([Makefile

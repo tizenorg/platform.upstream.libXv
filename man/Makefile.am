@@ -1,43 +1,71 @@
-#  Copyright 2005  Red Hat, Inc.
-# 
-#  Permission to use, copy, modify, distribute, and sell this software and its
-#  documentation for any purpose is hereby granted without fee, provided that
-#  the above copyright notice appear in all copies and that both that
-#  copyright notice and this permission notice appear in supporting
-#  documentation, and that the name of Red Hat not be used in
-#  advertising or publicity pertaining to distribution of the software without
-#  specific, written prior permission.  Red Hat makes no representations about
-#  the suitability of this software for any purpose.  It is provided "as is" without
-#  express or implied warranty.
-# 
-#  RED HAT DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
-#  INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO
-#  EVENT SHALL RED HAT BE LIABLE FOR ANY SPECIAL, INDIRECT OR
-#  CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE,
-#  DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-#  TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-#  PERFORMANCE OF THIS SOFTWARE.
+# $Id$
 #
+# Copyright 2005 Sun Microsystems, Inc.  All rights reserved.
+# 
+# Permission to use, copy, modify, distribute, and sell this software and its
+# documentation for any purpose is hereby granted without fee, provided that
+# the above copyright notice appear in all copies and that both that
+# copyright notice and this permission notice appear in supporting
+# documentation.
+# 
+# The above copyright notice and this permission notice shall be included
+# in all copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+# IN NO EVENT SHALL THE OPEN GROUP BE LIABLE FOR ANY CLAIM, DAMAGES OR
+# OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+# ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+# OTHER DEALINGS IN THE SOFTWARE.
+# 
+# Except as contained in this notice, the name of the copyright holders shall
+# not be used in advertising or otherwise to promote the sale, use or
+# other dealings in this Software without prior written authorization
+# from the copyright holders.
+# 
 
-man_MANS = \
-         Xv.3 \
-         XvFreeAdaptorInfo.3 \
-         XvFreeEncodingInfo.3 \
-         XvGetPortAttribute.3 \
-         XvGetStill.3 \
-         XvGetVideo.3 \
-         XvGrabPort.3 \
-         XvPortNotify.3 \
-         XvPutStill.3 \
-         XvPutVideo.3 \
-         XvQueryAdaptors.3 \
-         XvQueryBestSize.3 \
-         XvQueryEncodings.3 \
-         XvQueryExtension.3 \
-         XvSelectPortNotify.3 \
-         XvSelectVideoNotify.3 \
-         XvSetPortAttribute.3 \
-         XvStopVideo.3 \
-         XvUngrabPort.3 \
-         XvVideoNotify.3
-EXTRA_DIST = $(man_MANS)
+libmandir = $(mandir)/man$(LIB_MAN_SUFFIX)
+
+libman_SOURCES = \
+         Xv.man \
+         XvFreeAdaptorInfo.man \
+         XvFreeEncodingInfo.man \
+         XvGetPortAttribute.man \
+         XvGetStill.man \
+         XvGetVideo.man \
+         XvGrabPort.man \
+         XvPortNotify.man \
+         XvPutStill.man \
+         XvPutVideo.man \
+         XvQueryAdaptors.man \
+         XvQueryBestSize.man \
+         XvQueryEncodings.man \
+         XvQueryExtension.man \
+         XvSelectPortNotify.man \
+         XvSelectVideoNotify.man \
+         XvSetPortAttribute.man \
+         XvStopVideo.man \
+         XvUngrabPort.man \
+         XvVideoNotify.man
+
+libman_DATA = $(libman_SOURCES:man=$(LIB_MAN_SUFFIX))
+
+EXTRA_DIST = $(libman_SOURCES)
+
+CLEANFILES = $(libman_DATA)
+
+SED = sed
+
+# Strings to replace in man pages
+XORGRELSTRING = @PACKAGE_STRING@
+  XORGMANNAME = X Version 11
+
+MAN_SUBSTS = \
+	-e 's/__vendorversion__/"$(XORGRELSTRING)" "$(XORGMANNAME)"/' \
+	-e 's/__libmansuffix__/$(LIB_MAN_SUFFIX)/g' 
+
+SUFFIXES = .$(LIB_MAN_SUFFIX) .man
+
+.man.$(LIB_MAN_SUFFIX):
+	sed $(MAN_SUBSTS) < $< > $@

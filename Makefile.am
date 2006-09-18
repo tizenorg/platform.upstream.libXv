@@ -26,3 +26,9 @@ pkgconfig_DATA = xv.pc
 
 EXTRA_DIST = xv.pc.in autogen.sh
 
+.PHONY: ChangeLog
+
+ChangeLog:
+	git-log > ChangeLog
+
+dist-hook: ChangeLog

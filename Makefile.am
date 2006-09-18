@@ -32,3 +32,8 @@ ChangeLog:
 	git-log > ChangeLog
 
 dist-hook: ChangeLog
+
+if LINT
+lint:
+	(cd src && $(MAKE) $(MFLAGS) lint)
+endif LINT

@@ -381,6 +381,7 @@ XvQueryEncodings(
       u.buffer += (sz_xvEncodingInfo + 3) & ~3;
 
       if ( (name = (char *)Xmalloc(size+1)) == NULL) {
+	  XvFreeEncodingInfo(pes);
 	  Xfree(buffer);
           UnlockDisplay(dpy);
           SyncHandle();

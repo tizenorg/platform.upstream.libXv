@@ -4,9 +4,7 @@
 XvFreeAdaptorInfo \- free adaptor information 
 .\"
 .SH Syntax
-\fBXvFreeAdaptorInfo(\fIp_adaptor_info\fR)
-.sp 1l
-\fBXvAdaptorInfo \fI*p_adaptor_info\fR;
+\fBXvFreeAdaptorInfo(XvAdaptorInfo *\fIp_adaptor_info\fR)
 .SH Arguments
 .\"
 .IP \fIp_adaptor_info\fR 8

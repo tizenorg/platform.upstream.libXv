@@ -1,5 +1,4 @@
 .TH XvGetPortAttribute __libmansuffix__ __vendorversion__
-.\" $XFree86: xc/doc/man/Xv/XvGetPortAttribute.man,v 1.6 2001/01/27 18:20:35 dawes Exp $
 .SH Name
 XvGetPortAttribute \- return current port attribute value
 .\"

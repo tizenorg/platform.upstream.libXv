@@ -1,5 +1,4 @@
 .TH XvSelectVideoNotify __libmansuffix__ __vendorversion__
-.\" $XFree86: xc/doc/man/Xv/XvSelectVideoNotify.man,v 1.5 2001/01/27 18:20:36 dawes Exp $
 .SH Name
 XvSelectVideoNotify \- enable or disable VideoNotify events
 .\"

@@ -40,7 +40,6 @@ XORG_CWARNFLAGS
 
 # Check for dependencies
 PKG_CHECK_MODULES(XV, x11 xext xextproto videoproto)
-XV_CFLAGS="$CWARNFLAGS $XV_CFLAGS"
 AC_SUBST(XV_CFLAGS)
 AC_SUBST(XV_LIBS)
 		  
@@ -52,7 +51,6 @@ XORG_CHANGELOG
 dnl Allow checking code with lint, sparse, etc.
 XORG_WITH_LINT
 XORG_LINT_LIBRARY([Xv])
-LINT_FLAGS="${LINT_FLAGS} ${XV_CFLAGS}"
 
 AC_OUTPUT([Makefile
            include/Makefile

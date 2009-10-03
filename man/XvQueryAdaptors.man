@@ -50,6 +50,9 @@ The number of ports supported by the adaptor.
 .IP \fItype\fR 8
 A bit mask with the value XvInputMask asserted if the adaptor supports video
 input, and value XvOutputMask asserted if the adaptor supports video output.
+In Xv protocol 2.2 and later, there are 3 new bits defined - XvVideoMask,
+XvStillMask and XvImageMask indicating that the adaptor is capable
+of video, still or image primitives respectively.
 .IP \fIname\fR 8
 A vendor specific name that identifies the adaptor.
 .IP \fInum_formats\fR 8

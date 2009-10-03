@@ -85,5 +85,6 @@ supported by the adaptor.
 .SH SEE ALSO
 .\"
 .BR XvGetPortAttribute (__libmansuffix__),
+.BR XvQueryPortAttributes (__libmansuffix__),
 .BR XvSelectPortNotify (__libmansuffix__),
 .BR XvPortNotify (__libmansuffix__)

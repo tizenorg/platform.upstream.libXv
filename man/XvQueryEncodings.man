@@ -14,9 +14,8 @@ XvQueryEncodings \- return list of encodings for an adaptor
 .\"
 .IP \fIdpy\fR 8
 Specifies the connection to the X server.
-.IP \fIXvPortID\fR 8
-Specifies the port whose adaptor is to be queried for its
-list of encodings.
+.IP \fIport\fR 8
+Specifies the port whose adaptor is to be queried for its list of encodings.
 .IP \fIp_num_encodings\fR 8
 A pointer to where the number of encodings supported
 by the adaptor is written.

@@ -29,24 +29,21 @@ AM_MAINTAINER_MODE
 
 AM_CONFIG_HEADER(config.h)
 
-# Require xorg-macros: XORG_CWARNFLAGS, XORG_CHANGELOG, XORG_WITH_LINT
-m4_ifndef([XORG_MACROS_VERSION], [AC_FATAL([must install xorg-macros 1.2 or later before running autoconf/autogen])])
-XORG_MACROS_VERSION(1.2)
+# Require xorg-macros: XORG_DEFAULT_OPTIONS, XORG_WITH_LINT
+m4_ifndef([XORG_MACROS_VERSION], [AC_FATAL([must install xorg-macros 1.3 or later before running autoconf/autogen])])
+XORG_MACROS_VERSION(1.3)
 
 # Check for progs
 AC_PROG_CC
 AC_PROG_LIBTOOL
-XORG_CWARNFLAGS
+XORG_DEFAULT_OPTIONS
 
 # Check for dependencies
 PKG_CHECK_MODULES(XV, x11 xext xextproto videoproto)
 AC_SUBST(XV_CFLAGS)
 AC_SUBST(XV_LIBS)
-		  
+
 XORG_CHECK_MALLOC_ZERO
-XORG_MANPAGE_SECTIONS
-XORG_RELEASE_VERSION
-XORG_CHANGELOG
 
 dnl Allow checking code with lint, sparse, etc.
 XORG_WITH_LINT

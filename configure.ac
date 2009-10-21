@@ -24,7 +24,7 @@ dnl Process this file with autoconf to create configure.
 AC_PREREQ([2.57])
 
 AC_INIT(libXv, 1.0.5, [https://bugs.freedesktop.org/enter_bug.cgi?product=xorg], libXv)
-AM_INIT_AUTOMAKE([dist-bzip2])
+AM_INIT_AUTOMAKE([foreign dist-bzip2])
 AM_MAINTAINER_MODE
 
 AM_CONFIG_HEADER(config.h)

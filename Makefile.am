@@ -24,7 +24,7 @@ SUBDIRS = src man include
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = xv.pc
 
-EXTRA_DIST = xv.pc.in ChangeLog
+EXTRA_DIST = xv.pc.in 
 
 .PHONY: ChangeLog
 

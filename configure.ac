@@ -21,7 +21,7 @@ dnl  PERFORMANCE OF THIS SOFTWARE.
 dnl
 dnl Process this file with autoconf to create configure.
 
-AC_PREREQ([2.57])
+AC_PREREQ([2.60])
 
 AC_INIT(libXv, 1.0.5, [https://bugs.freedesktop.org/enter_bug.cgi?product=xorg], libXv)
 AM_INIT_AUTOMAKE([foreign dist-bzip2])

@@ -41,8 +41,6 @@ SOFTWARE.
 **
 */
 
-#define NEED_REPLIES
-
 #include <X11/Xlibint.h>
 #include <X11/extensions/Xvproto.h>
 #include <X11/extensions/Xvlib.h>

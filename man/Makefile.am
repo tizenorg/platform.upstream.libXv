@@ -59,18 +59,11 @@ EXTRA_DIST = $(libman_PRE) xv-library-v2.2.txt
 
 CLEANFILES = $(libman_DATA)
 
-SED = sed
-
-# Strings to replace in man pages
-XORGRELSTRING = @PACKAGE_STRING@
-  XORGMANNAME = X Version 11
-
-MAN_SUBSTS = \
-	-e 's/__vendorversion__/"$(XORGRELSTRING)" "$(XORGMANNAME)"/' \
-	-e 's/__libmandirsuffix__/$(LIB_MAN_DIR_SUFFIX)/g' \
-	-e 's/__libmansuffix__/$(LIB_MAN_SUFFIX)/g' 
-
 SUFFIXES = .$(LIB_MAN_SUFFIX) .man
 
+# String replacements in MAN_SUBSTS now come from xorg-macros.m4 via configure
+ADDITIONAL_MAN_SUBSTS = \
+	-e 's|__libmandirsuffix__|$(LIB_MAN_DIR_SUFFIX)|g'
+
 .man.$(LIB_MAN_SUFFIX):
-	$(AM_V_GEN)$(SED) $(MAN_SUBSTS) < $< > $@
+	$(AM_V_GEN)$(SED) $(MAN_SUBSTS) $(ADDITIONAL_MAN_SUBSTS) < $< > $@

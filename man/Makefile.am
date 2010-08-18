@@ -53,8 +53,6 @@ libman_PRE = \
 
 libman_DATA = $(libman_PRE:man=@LIB_MAN_SUFFIX@)
 
-LIB_MAN_DIR_SUFFIX = $(LIB_MAN_DIR:@mandir@/man%=%)
-
 EXTRA_DIST = $(libman_PRE) xv-library-v2.2.txt
 
 CLEANFILES = $(libman_DATA)
@@ -62,8 +60,5 @@ CLEANFILES = $(libman_DATA)
 SUFFIXES = .$(LIB_MAN_SUFFIX) .man
 
 # String replacements in MAN_SUBSTS now come from xorg-macros.m4 via configure
-ADDITIONAL_MAN_SUBSTS = \
-	-e 's|__libmandirsuffix__|$(LIB_MAN_DIR_SUFFIX)|g'
-
 .man.$(LIB_MAN_SUFFIX):
-	$(AM_V_GEN)$(SED) $(MAN_SUBSTS) $(ADDITIONAL_MAN_SUBSTS) < $< > $@
+	$(AM_V_GEN)$(SED) $(MAN_SUBSTS) < $< > $@

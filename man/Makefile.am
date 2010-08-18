@@ -23,33 +23,33 @@
 
 libmandir = $(LIB_MAN_DIR)
 
-libman_PRE = \
-         Xv.man \
-         XvCreateImage.man \
-         XvFreeAdaptorInfo.man \
-         XvFreeEncodingInfo.man \
-         XvGetPortAttribute.man \
-         XvGetStill.man \
-         XvGetVideo.man \
-         XvGrabPort.man \
-         XvListImageFormats.man \
-         XvPortNotify.man \
-         XvPutImage.man \
-         XvPutStill.man \
-         XvPutVideo.man \
-         XvQueryAdaptors.man \
-         XvQueryBestSize.man \
-         XvQueryEncodings.man \
-         XvQueryExtension.man \
-         XvQueryPortAttributes.man \
-         XvSelectPortNotify.man \
-         XvSelectVideoNotify.man \
-         XvSetPortAttribute.man \
-         XvShmCreateImage.man \
-         XvShmPutImage.man \
-         XvStopVideo.man \
-         XvUngrabPort.man \
-         XvVideoNotify.man
+libman_PRE =				\
+	Xv.man				\
+	XvCreateImage.man		\
+	XvFreeAdaptorInfo.man		\
+	XvFreeEncodingInfo.man		\
+	XvGetPortAttribute.man		\
+	XvGetStill.man			\
+	XvGetVideo.man			\
+	XvGrabPort.man			\
+	XvListImageFormats.man		\
+	XvPortNotify.man		\
+	XvPutImage.man			\
+	XvPutStill.man			\
+	XvPutVideo.man			\
+	XvQueryAdaptors.man		\
+	XvQueryBestSize.man		\
+	XvQueryEncodings.man		\
+	XvQueryExtension.man		\
+	XvQueryPortAttributes.man	\
+	XvSelectPortNotify.man		\
+	XvSelectVideoNotify.man		\
+	XvSetPortAttribute.man		\
+	XvShmCreateImage.man		\
+	XvShmPutImage.man		\
+	XvStopVideo.man			\
+	XvUngrabPort.man		\
+	XvVideoNotify.man
 
 libman_DATA = $(libman_PRE:man=@LIB_MAN_SUFFIX@)
 

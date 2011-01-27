@@ -37,7 +37,6 @@ XORG_MACROS_VERSION(1.8)
 XORG_DEFAULT_OPTIONS
 
 # Check for progs
-AC_PROG_CC
 AC_PROG_LIBTOOL
 
 # Check for dependencies

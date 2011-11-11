@@ -57,7 +57,7 @@ SOFTWARE.
 
 static XExtensionInfo _xv_info_data;
 static XExtensionInfo *xv_info = &_xv_info_data;
-static char *xv_extension_name = XvName;
+static const char *xv_extension_name = XvName;
 
 #define XvCheckExtension(dpy, i, val) \
   XextCheckExtension(dpy, i, xv_extension_name, val)
@@ -82,7 +82,7 @@ static XExtensionHooks xv_extension_hooks = {
 };
 
 
-static char *xv_error_list[] =
+static const char *xv_error_list[] =
 {
    "BadPort",	    /* XvBadPort     */
    "BadEncoding",   /* XvBadEncoding */

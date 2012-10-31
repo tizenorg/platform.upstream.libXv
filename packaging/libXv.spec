@@ -4,7 +4,7 @@ Release:        1
 License:        MIT
 Summary:        X
 Url:            http://www.x.org
-Group:          System Environment/Libraries
+Group:          System/Libraries
 
 Source:         %{name}-%{version}.tar.bz2
 
@@ -35,10 +35,6 @@ make %{?_smp_mflags}
 %install
 
 %make_install
-
-# We intentionally don't ship *.la files
-rm -f %{buildroot}%{_libdir}/*.la
-
 %remove_docs
 
 %post -p /sbin/ldconfig
@@ -46,7 +42,7 @@ rm -f %{buildroot}%{_libdir}/*.la
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS COPYING ChangeLog
+%doc COPYING 
 %{_libdir}/libXv.so.1
 %{_libdir}/libXv.so.1.0.0
 
@@ -56,5 +52,3 @@ rm -f %{buildroot}%{_libdir}/*.la
 %{_includedir}/X11/extensions/Xvlib.h
 %{_libdir}/libXv.so
 %{_libdir}/pkgconfig/xv.pc
-#%dir %{_mandir}/man3x
-#%{_mandir}/man3/*.3*

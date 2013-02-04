@@ -5,7 +5,6 @@ License:        MIT
 Summary:        X
 Url:            http://www.x.org
 Group:          System/Libraries
-
 Source:         %{name}-%{version}.tar.bz2
 
 BuildRequires:  pkgconfig(videoproto)
@@ -19,7 +18,6 @@ X.Org X11 libXv runtime library
 Summary:        X
 Group:          Development/Libraries
 Requires:       %{name} = %{version}
-Provides:       libxv-devel
 
 %description devel
 X.Org X11 libXv development package
@@ -28,8 +26,7 @@ X.Org X11 libXv development package
 %setup -q
 
 %build
-%reconfigure --disable-static \
-	       LDFLAGS="${LDFLAGS} -Wl,--hash-style=both -Wl,--as-needed"
+%reconfigure --disable-static 
 make %{?_smp_mflags}
 
 %install
@@ -42,7 +39,7 @@ make %{?_smp_mflags}
 
 %files
 %defattr(-,root,root,-)
-%doc COPYING 
+%license COPYING 
 %{_libdir}/libXv.so.1
 %{_libdir}/libXv.so.1.0.0
 

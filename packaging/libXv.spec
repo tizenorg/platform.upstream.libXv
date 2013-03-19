@@ -2,9 +2,9 @@ Name:           libXv
 Version:        1.0.7
 Release:        1
 License:        MIT
-Summary:        X
+Summary:        Xvideo extension library
 Url:            http://www.x.org
-Group:          System/Libraries
+Group:          Graphics/X Window System
 Source:         %{name}-%{version}.tar.bz2
 
 BuildRequires:  pkgconfig(videoproto)
@@ -15,7 +15,7 @@ BuildRequires:  pkgconfig(xorg-macros)
 X.Org X11 libXv runtime library
 
 %package devel
-Summary:        X
+Summary:        Xvideo extension library - Development
 Group:          Development/Libraries
 Requires:       %{name} = %{version}
 
@@ -35,6 +35,7 @@ make %{?_smp_mflags}
 %remove_docs
 
 %post -p /sbin/ldconfig
+
 %postun -p /sbin/ldconfig
 
 %files

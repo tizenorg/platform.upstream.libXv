@@ -864,14 +864,20 @@ XvQueryPortAttributes(Display *dpy, XvPortID port, int *num)
 	  xvAttributeInfo Info;
 	  int i;
 
+	  /* keep track of remaining room for text strings */
+	  size = rep.text_size;
+
 	  for(i = 0; i < rep.num_attributes; i++) {
              _XRead(dpy, (char*)(&Info), sz_xvAttributeInfo);
 	      ret[i].flags = (int)Info.flags;
 	      ret[i].min_value = Info.min;
 	      ret[i].max_value = Info.max;
 	      ret[i].name = marker;
-	      _XRead(dpy, marker, Info.size);
-	      marker += Info.size;
+	      if (Info.size <= size) {
+		  _XRead(dpy, marker, Info.size);
+		  marker += Info.size;
+		  size -= Info.size;
+	      }
 	      (*num)++;
 	  }
       } else

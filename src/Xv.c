@@ -918,9 +918,10 @@ XvImageFormatValues * XvListImageFormats (
   }
 
   if(rep.num_formats) {
-      int size = (rep.num_formats * sizeof(XvImageFormatValues));
+      if (rep.num_formats < (INT_MAX / sizeof(XvImageFormatValues)))
+	  ret = Xmalloc(rep.num_formats * sizeof(XvImageFormatValues));
 
-      if((ret = Xmalloc(size))) {
+      if (ret != NULL) {
 	  xvImageFormatInfo Info;
 	  int i;
 

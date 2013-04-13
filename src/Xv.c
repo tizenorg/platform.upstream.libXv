@@ -49,11 +49,27 @@ SOFTWARE.
 **
 */
 
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include <stdio.h>
 #include "Xvlibint.h"
 #include <X11/extensions/Xext.h>
 #include <X11/extensions/extutil.h>
 #include <X11/extensions/XShm.h>
+#include <limits.h>
+
+#ifndef HAVE__XEATDATAWORDS
+static inline void _XEatDataWords(Display *dpy, unsigned long n)
+{
+# ifndef LONG64
+    if (n >= (ULONG_MAX >> 2))
+        _XIOError(dpy);
+# endif
+    _XEatData (dpy, n << 2);
+}
+#endif
 
 static XExtensionInfo _xv_info_data;
 static XExtensionInfo *xv_info = &_xv_info_data;
@@ -853,7 +869,7 @@ XvQueryPortAttributes(Display *dpy, XvPortID port, int *num)
 	      (*num)++;
 	  }
       } else
-	_XEatData(dpy, rep.length << 2);
+	  _XEatDataWords(dpy, rep.length);
   }
 
   UnlockDisplay(dpy);
@@ -923,7 +939,7 @@ XvImageFormatValues * XvListImageFormats (
 	      (*num)++;
 	  }
       } else
-	_XEatData(dpy, rep.length << 2);
+	  _XEatDataWords(dpy, rep.length);
   }
 
   UnlockDisplay(dpy);
@@ -976,7 +992,7 @@ XvImage * XvCreateImage (
   	_XRead(dpy, (char*)(ret->pitches), rep.num_planes << 2);
 	_XRead(dpy, (char*)(ret->offsets), rep.num_planes << 2);
    } else
-	_XEatData(dpy, rep.length << 2);
+       _XEatDataWords(dpy, rep.length);
 
    UnlockDisplay(dpy);
    SyncHandle();

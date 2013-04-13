@@ -851,9 +851,15 @@ XvQueryPortAttributes(Display *dpy, XvPortID port, int *num)
   }
 
   if(rep.num_attributes) {
-      int size = (rep.num_attributes * sizeof(XvAttribute)) + rep.text_size;
+      unsigned long size;
+      /* limit each part to no more than one half the max size */
+      if ((rep.num_attributes < ((INT_MAX / 2) / sizeof(XvAttribute))) &&
+	  (rep.text_size < (INT_MAX / 2))) {
+	  size = (rep.num_attributes * sizeof(XvAttribute)) + rep.text_size;
+	  ret = Xmalloc(size);
+      }
 
-      if((ret = Xmalloc(size))) {
+      if (ret != NULL) {
 	  char* marker = (char*)(&ret[rep.num_attributes]);
 	  xvAttributeInfo Info;
 	  int i;

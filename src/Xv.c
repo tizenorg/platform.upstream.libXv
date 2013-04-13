@@ -992,7 +992,10 @@ XvImage * XvCreateImage (
       return NULL;
    }
 
-   if((ret = (XvImage*)Xmalloc(sizeof(XvImage) + (rep.num_planes << 3)))) {
+   if (rep.num_planes < ((INT_MAX >> 3) - sizeof(XvImage)))
+       ret = Xmalloc(sizeof(XvImage) + (rep.num_planes << 3));
+
+   if (ret != NULL) {
 	ret->id = id;
 	ret->width = rep.width;
 	ret->height = rep.height;

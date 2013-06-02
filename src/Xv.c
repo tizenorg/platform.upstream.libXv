@@ -865,8 +865,8 @@ XvQueryPortAttributes(Display *dpy, XvPortID port, int *num)
       unsigned long size;
       /* limit each part to no more than one half the max size */
       if ((rep.num_attributes < ((INT_MAX / 2) / sizeof(XvAttribute))) &&
-	  (rep.text_size < (INT_MAX / 2))) {
-	  size = (rep.num_attributes * sizeof(XvAttribute)) + rep.text_size;
+	  (rep.text_size < (INT_MAX / 2)-1)) {
+	  size = (rep.num_attributes * sizeof(XvAttribute)) + rep.text_size + 1;
 	  ret = Xmalloc(size);
       }
 
@@ -891,6 +891,10 @@ XvQueryPortAttributes(Display *dpy, XvPortID port, int *num)
 	      }
 	      (*num)++;
 	  }
+
+	  /* ensure final string is nil-terminated to avoid exposure of
+             uninitialized memory */
+	  *marker = '\0';
       } else
 	  _XEatDataWords(dpy, rep.length);
   }

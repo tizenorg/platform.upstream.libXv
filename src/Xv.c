@@ -79,6 +79,8 @@ static const char *xv_extension_name = XvName;
 #define XvCheckExtension(dpy, i, val) \
   XextCheckExtension(dpy, i, xv_extension_name, val)
 
+#define pad_to_int32(bytes) (((bytes) + 3) & ~3U)
+
 static char *xv_error_string(Display *dpy, int code, XExtCodes *codes,
                              char *buf, int n);
 static int xv_close_display(Display *dpy, XExtCodes *codes);
@@ -236,7 +238,7 @@ XvQueryAdaptors(
         /* GET ADAPTOR NAME */
 
         size = u.pa->name_size;
-        u.buffer += (sz_xvAdaptorInfo + 3) & ~3;
+        u.buffer += pad_to_int32(sz_xvAdaptorInfo);
 
         if ((name = Xmalloc(size + 1)) == NULL) {
             XvFreeAdaptorInfo(pas);
@@ -249,7 +251,7 @@ XvQueryAdaptors(
         name[size] = '\0';
         pa->name = name;
 
-        u.buffer += (size + 3) & ~3;
+        u.buffer += pad_to_int32(size);
 
         /* GET FORMATS */
 
@@ -268,7 +270,7 @@ XvQueryAdaptors(
             pf->visual_id = u.pf->visual;
             pf++;
 
-            u.buffer += (sz_xvFormat + 3) & ~3;
+            u.buffer += pad_to_int32(sz_xvFormat);
         }
 
         pa->formats = pfs;
@@ -386,7 +388,7 @@ XvQueryEncodings(
         pe->num_encodings = rep.num_encodings - jj;
 
         size = u.pe->name_size;
-        u.buffer += (sz_xvEncodingInfo + 3) & ~3;
+        u.buffer += pad_to_int32(sz_xvEncodingInfo);
 
         if ((name = Xmalloc(size + 1)) == NULL) {
             XvFreeEncodingInfo(pes);
@@ -400,7 +402,7 @@ XvQueryEncodings(
         pe->name = name;
         pe++;
 
-        u.buffer += (size + 3) & ~3;
+        u.buffer += pad_to_int32(size);
     }
 
     *p_nEncodings = rep.num_encodings;

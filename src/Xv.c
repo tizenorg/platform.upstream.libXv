@@ -190,7 +190,7 @@ XvQueryAdaptors(
     }
 
     size = rep.length << 2;
-    if ((buffer = (char *) Xmalloc((unsigned) size)) == NULL) {
+    if ((buffer = Xmalloc(size)) == NULL) {
         UnlockDisplay(dpy);
         SyncHandle();
         return (XvBadAlloc);
@@ -206,7 +206,7 @@ XvQueryAdaptors(
     }
     else {
         size = rep.num_adaptors * sizeof(XvAdaptorInfo);
-        if ((pas = (XvAdaptorInfo *) Xmalloc(size)) == NULL) {
+        if ((pas = Xmalloc(size)) == NULL) {
             Xfree(buffer);
             UnlockDisplay(dpy);
             SyncHandle();
@@ -237,7 +237,7 @@ XvQueryAdaptors(
         size = u.pa->name_size;
         u.buffer += (sz_xvAdaptorInfo + 3) & ~3;
 
-        if ((name = (char *) Xmalloc(size + 1)) == NULL) {
+        if ((name = Xmalloc(size + 1)) == NULL) {
             XvFreeAdaptorInfo(pas);
             Xfree(buffer);
             UnlockDisplay(dpy);
@@ -253,7 +253,7 @@ XvQueryAdaptors(
         /* GET FORMATS */
 
         size = pa->num_formats * sizeof(XvFormat);
-        if ((pfs = (XvFormat *) Xmalloc(size)) == NULL) {
+        if ((pfs = Xmalloc(size)) == NULL) {
             XvFreeAdaptorInfo(pas);
             Xfree(buffer);
             UnlockDisplay(dpy);
@@ -346,7 +346,7 @@ XvQueryEncodings(
     }
 
     size = rep.length << 2;
-    if ((buffer = (char *) Xmalloc((unsigned) size)) == NULL) {
+    if ((buffer = Xmalloc(size)) == NULL) {
         UnlockDisplay(dpy);
         SyncHandle();
         return (XvBadAlloc);
@@ -358,7 +358,7 @@ XvQueryEncodings(
     /* GET ENCODINGS */
 
     size = rep.num_encodings * sizeof(XvEncodingInfo);
-    if ((pes = (XvEncodingInfo *) Xmalloc(size)) == NULL) {
+    if ((pes = Xmalloc(size)) == NULL) {
         Xfree(buffer);
         UnlockDisplay(dpy);
         SyncHandle();
@@ -386,7 +386,7 @@ XvQueryEncodings(
         size = u.pe->name_size;
         u.buffer += (sz_xvEncodingInfo + 3) & ~3;
 
-        if ((name = (char *) Xmalloc(size + 1)) == NULL) {
+        if ((name = Xmalloc(size + 1)) == NULL) {
             XvFreeEncodingInfo(pes);
             Xfree(buffer);
             UnlockDisplay(dpy);

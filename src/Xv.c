@@ -162,7 +162,8 @@ XvQueryAdaptors(
     XExtDisplayInfo *info = xv_find_display(dpy);
     xvQueryAdaptorsReq *req;
     xvQueryAdaptorsReply rep;
-    int size, ii, jj;
+    size_t size;
+    unsigned int ii, jj;
     char *name;
     XvAdaptorInfo *pas, *pa;
     XvFormat *pfs, *pf;
@@ -195,7 +196,7 @@ XvQueryAdaptors(
         SyncHandle();
         return (XvBadAlloc);
     }
-    _XRead(dpy, buffer, size);
+    _XRead(dpy, buffer, (long) size);
 
     u.buffer = buffer;
 
@@ -291,7 +292,7 @@ void
 XvFreeAdaptorInfo(XvAdaptorInfo *pAdaptors)
 {
     XvAdaptorInfo *pa;
-    int ii;
+    unsigned int ii;
 
     if (!pAdaptors)
         return;
@@ -320,7 +321,8 @@ XvQueryEncodings(
     XExtDisplayInfo *info = xv_find_display(dpy);
     xvQueryEncodingsReq *req;
     xvQueryEncodingsReply rep;
-    int size, jj;
+    size_t size;
+    unsigned int jj;
     char *name;
     XvEncodingInfo *pes, *pe;
     char *buffer;
@@ -351,7 +353,7 @@ XvQueryEncodings(
         SyncHandle();
         return (XvBadAlloc);
     }
-    _XRead(dpy, buffer, size);
+    _XRead(dpy, buffer, (long) size);
 
     u.buffer = buffer;
 
@@ -415,7 +417,7 @@ void
 XvFreeEncodingInfo(XvEncodingInfo *pEncodings)
 {
     XvEncodingInfo *pe;
-    int ii;
+    unsigned long ii;
 
     if (!pEncodings)
         return;
@@ -842,7 +844,7 @@ XvQueryPortAttributes(Display *dpy, XvPortID port, int *num)
         if (ret != NULL) {
             char *marker = (char *) (&ret[rep.num_attributes]);
             xvAttributeInfo Info;
-            int i;
+            unsigned int i;
 
             /* keep track of remaining room for text strings */
             size = rep.text_size;
@@ -906,7 +908,7 @@ XvListImageFormats(Display *dpy, XvPortID port, int *num)
 
         if (ret != NULL) {
             xvImageFormatInfo Info;
-            int i;
+            unsigned int i;
 
             for (i = 0; i < rep.num_formats; i++) {
                 _XRead(dpy, (char *) (&Info), sz_xvImageFormatInfo);
@@ -1036,7 +1038,7 @@ XvPutImage(
 {
     XExtDisplayInfo *info = xv_find_display(dpy);
     xvPutImageReq *req;
-    int len;
+    unsigned int len;
 
     XvCheckExtension(dpy, info, XvBadExtension);
 
@@ -1061,7 +1063,7 @@ XvPutImage(
     req->width = image->width;
     req->height = image->height;
 
-    len = (image->data_size + 3) >> 2;
+    len = ((unsigned int) image->data_size + 3) >> 2;
     SetReqLen(req, len, len);
 
     /* Yes it's kindof lame that we are sending the whole thing,

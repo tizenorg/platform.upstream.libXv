@@ -194,6 +194,7 @@ XvQueryAdaptors(
 
     size = rep.length << 2;
     if ((buffer = Xmalloc(size)) == NULL) {
+        _XEatDataWords(dpy, rep.length);
         UnlockDisplay(dpy);
         SyncHandle();
         return (XvBadAlloc);
@@ -351,6 +352,7 @@ XvQueryEncodings(
 
     size = rep.length << 2;
     if ((buffer = Xmalloc(size)) == NULL) {
+        _XEatDataWords(dpy, rep.length);
         UnlockDisplay(dpy);
         SyncHandle();
         return (XvBadAlloc);

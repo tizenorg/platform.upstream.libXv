@@ -129,6 +129,7 @@ XvQueryExtension(
     XExtDisplayInfo *info = xv_find_display(dpy);
     xvQueryExtensionReq *req;
     xvQueryExtensionReply rep;
+    int status;
 
     XvCheckExtension(dpy, info, XvBadExtension);
 
@@ -137,9 +138,8 @@ XvQueryExtension(
     XvGetReq(QueryExtension, req);
 
     if (!_XReply(dpy, (xReply *) &rep, 0, xFalse)) {
-        UnlockDisplay(dpy);
-        SyncHandle();
-        return XvBadExtension;
+        status = XvBadExtension;
+        goto out;
     }
 
     *p_version = rep.version;
@@ -148,10 +148,13 @@ XvQueryExtension(
     *p_eventBase = info->codes->first_event;
     *p_errorBase = info->codes->first_error;
 
+    status = Success;
+
+  out:
     UnlockDisplay(dpy);
     SyncHandle();
 
-    return Success;
+    return status;
 }
 
 int
@@ -167,15 +170,16 @@ XvQueryAdaptors(
     size_t size;
     unsigned int ii, jj;
     char *name;
-    XvAdaptorInfo *pas, *pa;
+    XvAdaptorInfo *pas = NULL, *pa;
     XvFormat *pfs, *pf;
-    char *buffer;
+    char *buffer = NULL;
     union {
         char *buffer;
         char *string;
         xvAdaptorInfo *pa;
         xvFormat *pf;
     } u;
+    int status;
 
     XvCheckExtension(dpy, info, XvBadExtension);
 
@@ -187,35 +191,40 @@ XvQueryAdaptors(
     /* READ THE REPLY */
 
     if (_XReply(dpy, (xReply *) &rep, 0, xFalse) == 0) {
-        UnlockDisplay(dpy);
-        SyncHandle();
-        return (XvBadReply);
+        rep.num_adaptors = 0;
+        status = XvBadReply;
+        goto out;
     }
 
     size = rep.length << 2;
-    if ((buffer = Xmalloc(size)) == NULL) {
-        _XEatDataWords(dpy, rep.length);
-        UnlockDisplay(dpy);
-        SyncHandle();
-        return (XvBadAlloc);
+    if (size > 0) {
+        if ((buffer = Xmalloc(size)) == NULL) {
+            _XEatDataWords(dpy, rep.length);
+            status = XvBadAlloc;
+            goto out;
+        }
+        _XRead(dpy, buffer, (long) size);
     }
-    _XRead(dpy, buffer, (long) size);
-
-    u.buffer = buffer;
 
     /* GET INPUT ADAPTORS */
 
     if (rep.num_adaptors == 0) {
-        pas = NULL;
+        /* If there's no adaptors, there's nothing more to do. */
+        status = Success;
+        goto out;
     }
-    else {
-        size = rep.num_adaptors * sizeof(XvAdaptorInfo);
-        if ((pas = Xmalloc(size)) == NULL) {
-            Xfree(buffer);
-            UnlockDisplay(dpy);
-            SyncHandle();
-            return (XvBadAlloc);
-        }
+
+    if (size < (rep.num_adaptors * sz_xvAdaptorInfo)) {
+        /* If there's not enough data for the number of adaptors,
+           then we have a problem. */
+        status = XvBadReply;
+        goto out;
+    }
+
+    size = rep.num_adaptors * sizeof(XvAdaptorInfo);
+    if ((pas = Xmalloc(size)) == NULL) {
+        status = XvBadAlloc;
+        goto out;
     }
 
     /* INIT ADAPTOR FIELDS */
@@ -228,6 +237,7 @@ XvQueryAdaptors(
         pa++;
     }
 
+    u.buffer = buffer;
     pa = pas;
     for (ii = 0; ii < rep.num_adaptors; ii++) {
         pa->type = u.pa->type;
@@ -242,11 +252,8 @@ XvQueryAdaptors(
         u.buffer += pad_to_int32(sz_xvAdaptorInfo);
 
         if ((name = Xmalloc(size + 1)) == NULL) {
-            XvFreeAdaptorInfo(pas);
-            Xfree(buffer);
-            UnlockDisplay(dpy);
-            SyncHandle();
-            return (XvBadAlloc);
+            status = XvBadAlloc;
+            goto out;
         }
         (void) strncpy(name, u.string, size);
         name[size] = '\0';
@@ -258,11 +265,8 @@ XvQueryAdaptors(
 
         size = pa->num_formats * sizeof(XvFormat);
         if ((pfs = Xmalloc(size)) == NULL) {
-            XvFreeAdaptorInfo(pas);
-            Xfree(buffer);
-            UnlockDisplay(dpy);
-            SyncHandle();
-            return (XvBadAlloc);
+            status = XvBadAlloc;
+            goto out;
         }
 
         pf = pfs;
@@ -280,6 +284,14 @@ XvQueryAdaptors(
 
     }
 
+    status = Success;
+
+  out:
+    if (status != Success) {
+        XvFreeAdaptorInfo(pas);
+        pas = NULL;
+    }
+
     *p_nAdaptors = rep.num_adaptors;
     *p_pAdaptors = pas;
 
@@ -287,7 +299,7 @@ XvQueryAdaptors(
     UnlockDisplay(dpy);
     SyncHandle();
 
-    return (Success);
+    return status;
 }
 
 
@@ -327,13 +339,14 @@ XvQueryEncodings(
     size_t size;
     unsigned int jj;
     char *name;
-    XvEncodingInfo *pes, *pe;
-    char *buffer;
+    XvEncodingInfo *pes = NULL, *pe;
+    char *buffer = NULL;
     union {
         char *buffer;
         char *string;
         xvEncodingInfo *pe;
     } u;
+    int status;
 
     XvCheckExtension(dpy, info, XvBadExtension);
 
@@ -345,30 +358,40 @@ XvQueryEncodings(
     /* READ THE REPLY */
 
     if (_XReply(dpy, (xReply *) &rep, 0, xFalse) == 0) {
-        UnlockDisplay(dpy);
-        SyncHandle();
-        return (XvBadReply);
+        rep.num_encodings = 0;
+        status = XvBadReply;
+        goto out;
     }
 
     size = rep.length << 2;
-    if ((buffer = Xmalloc(size)) == NULL) {
-        _XEatDataWords(dpy, rep.length);
-        UnlockDisplay(dpy);
-        SyncHandle();
-        return (XvBadAlloc);
+    if (size > 0) {
+        if ((buffer = Xmalloc(size)) == NULL) {
+            _XEatDataWords(dpy, rep.length);
+            status = XvBadAlloc;
+            goto out;
+        }
+        _XRead(dpy, buffer, (long) size);
     }
-    _XRead(dpy, buffer, (long) size);
-
-    u.buffer = buffer;
 
     /* GET ENCODINGS */
 
+    if (rep.num_encodings == 0) {
+        /* If there's no encodings, there's nothing more to do. */
+        status = Success;
+        goto out;
+    }
+
+    if (size < (rep.num_encodings * sz_xvEncodingInfo)) {
+        /* If there's not enough data for the number of adaptors,
+           then we have a problem. */
+        status = XvBadReply;
+        goto out;
+    }
+
     size = rep.num_encodings * sizeof(XvEncodingInfo);
     if ((pes = Xmalloc(size)) == NULL) {
-        Xfree(buffer);
-        UnlockDisplay(dpy);
-        SyncHandle();
-        return (XvBadAlloc);
+        status = XvBadAlloc;
+        goto out;
     }
 
     /* INITIALIZE THE ENCODING POINTER */
@@ -379,6 +402,8 @@ XvQueryEncodings(
         pe->num_encodings = 0;
         pe++;
     }
+
+    u.buffer = buffer;
 
     pe = pes;
     for (jj = 0; jj < rep.num_encodings; jj++) {
@@ -393,11 +418,8 @@ XvQueryEncodings(
         u.buffer += pad_to_int32(sz_xvEncodingInfo);
 
         if ((name = Xmalloc(size + 1)) == NULL) {
-            XvFreeEncodingInfo(pes);
-            Xfree(buffer);
-            UnlockDisplay(dpy);
-            SyncHandle();
-            return (XvBadAlloc);
+            status = XvBadAlloc;
+            goto out;
         }
         strncpy(name, u.string, size);
         name[size] = '\0';
@@ -405,6 +427,14 @@ XvQueryEncodings(
         pe++;
 
         u.buffer += pad_to_int32(size);
+    }
+
+    status = Success;
+
+  out:
+    if (status != Success) {
+        XvFreeEncodingInfo(pes);
+        pes = NULL;
     }
 
     *p_nEncodings = rep.num_encodings;
@@ -727,6 +757,7 @@ XvGetPortAttribute(Display *dpy, XvPortID port, Atom attribute, int *p_value)
     XExtDisplayInfo *info = xv_find_display(dpy);
     xvGetPortAttributeReq *req;
     xvGetPortAttributeReply rep;
+    int status;
 
     XvCheckExtension(dpy, info, XvBadExtension);
 
@@ -739,17 +770,17 @@ XvGetPortAttribute(Display *dpy, XvPortID port, Atom attribute, int *p_value)
     /* READ THE REPLY */
 
     if (_XReply(dpy, (xReply *) &rep, 0, xFalse) == 0) {
-        UnlockDisplay(dpy);
-        SyncHandle();
-        return (XvBadReply);
+        status = XvBadReply;
     }
-
-    *p_value = rep.value;
+    else {
+        *p_value = rep.value;
+        status = Success;
+    }
 
     UnlockDisplay(dpy);
     SyncHandle();
 
-    return (Success);
+    return status;
 }
 
 int
@@ -767,6 +798,7 @@ XvQueryBestSize(
     XExtDisplayInfo *info = xv_find_display(dpy);
     xvQueryBestSizeReq *req;
     xvQueryBestSizeReply rep;
+    int status;
 
     XvCheckExtension(dpy, info, XvBadExtension);
 
@@ -783,18 +815,18 @@ XvQueryBestSize(
     /* READ THE REPLY */
 
     if (_XReply(dpy, (xReply *) &rep, 0, xFalse) == 0) {
-        UnlockDisplay(dpy);
-        SyncHandle();
-        return (XvBadReply);
+        status = XvBadReply;
     }
-
-    *p_actual_width = rep.actual_width;
-    *p_actual_height = rep.actual_height;
+    else {
+        *p_actual_width = rep.actual_width;
+        *p_actual_height = rep.actual_height;
+        status = Success;
+    }
 
     UnlockDisplay(dpy);
     SyncHandle();
 
-    return (Success);
+    return status;
 }
 
 
@@ -818,9 +850,7 @@ XvQueryPortAttributes(Display *dpy, XvPortID port, int *num)
     /* READ THE REPLY */
 
     if (_XReply(dpy, (xReply *) &rep, 0, xFalse) == 0) {
-        UnlockDisplay(dpy);
-        SyncHandle();
-        return ret;
+        goto out;
     }
 
     /*
@@ -875,6 +905,7 @@ XvQueryPortAttributes(Display *dpy, XvPortID port, int *num)
             _XEatDataWords(dpy, rep.length);
     }
 
+  out:
     UnlockDisplay(dpy);
     SyncHandle();
 
@@ -901,9 +932,7 @@ XvListImageFormats(Display *dpy, XvPortID port, int *num)
     /* READ THE REPLY */
 
     if (_XReply(dpy, (xReply *) &rep, 0, xFalse) == 0) {
-        UnlockDisplay(dpy);
-        SyncHandle();
-        return NULL;
+        goto out;
     }
 
     if (rep.num_formats) {
@@ -945,6 +974,7 @@ XvListImageFormats(Display *dpy, XvPortID port, int *num)
             _XEatDataWords(dpy, rep.length);
     }
 
+  out:
     UnlockDisplay(dpy);
     SyncHandle();
 
@@ -978,9 +1008,7 @@ XvCreateImage(
     /* READ THE REPLY */
 
     if (!_XReply(dpy, (xReply *) &rep, 0, xFalse)) {
-        UnlockDisplay(dpy);
-        SyncHandle();
-        return NULL;
+        goto out;
     }
 
     if (rep.num_planes < ((INT_MAX >> 3) - sizeof(XvImage)))
@@ -1002,6 +1030,7 @@ XvCreateImage(
     else
         _XEatDataWords(dpy, rep.length);
 
+  out:
     UnlockDisplay(dpy);
     SyncHandle();
 

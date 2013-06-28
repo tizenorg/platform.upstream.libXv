@@ -6,6 +6,7 @@ Summary:        Xvideo extension library
 Url:            http://www.x.org
 Group:          Graphics/X Window System
 Source:         %{name}-%{version}.tar.bz2
+Source1001: 	libXv.manifest
 
 BuildRequires:  pkgconfig(videoproto)
 BuildRequires:  pkgconfig(xext)
@@ -24,6 +25,7 @@ X.Org X11 libXv development package
 
 %prep
 %setup -q
+cp %{SOURCE1001} .
 
 %build
 %reconfigure --disable-static 
@@ -39,12 +41,14 @@ make %{?_smp_mflags}
 %postun -p /sbin/ldconfig
 
 %files
+%manifest %{name}.manifest
 %defattr(-,root,root,-)
 %license COPYING 
 %{_libdir}/libXv.so.1
 %{_libdir}/libXv.so.1.0.0
 
 %files devel
+%manifest %{name}.manifest
 %defattr(-,root,root,-)
 %doc man/xv-library-v2.2.txt
 %{_includedir}/X11/extensions/Xvlib.h

@@ -41,13 +41,7 @@ XORG_DEFAULT_OPTIONS
 XORG_CHECK_MALLOC_ZERO
 
 # Obtain compiler/linker options for depedencies
-PKG_CHECK_MODULES(XV, [x11 >= 1.5 xext xextproto videoproto])
-
-# Check for _XEatDataWords function that may be patched into older Xlib release
-SAVE_LIBS="$LIBS"
-LIBS="$XV_LIBS"
-AC_CHECK_FUNCS([_XEatDataWords])
-LIBS="$SAVE_LIBS"
+PKG_CHECK_MODULES(XV, [x11 >= 1.6 xext xextproto videoproto])
 
 # Allow checking code with lint, sparse, etc.
 XORG_WITH_LINT

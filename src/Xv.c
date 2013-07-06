@@ -60,18 +60,6 @@ SOFTWARE.
 #include <X11/extensions/XShm.h>
 #include <limits.h>
 
-#ifndef HAVE__XEATDATAWORDS
-static inline void
-_XEatDataWords(Display *dpy, unsigned long n)
-{
-# ifndef LONG64
-    if (n >= (ULONG_MAX >> 2))
-        _XIOError(dpy);
-# endif
-    _XEatData(dpy, n << 2);
-}
-#endif
-
 static XExtensionInfo _xv_info_data;
 static XExtensionInfo *xv_info = &_xv_info_data;
 static const char *xv_extension_name = XvName;

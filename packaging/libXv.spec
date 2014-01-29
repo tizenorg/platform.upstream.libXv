@@ -1,3 +1,5 @@
+%bcond_with x
+
 Name:           libXv
 Version:        1.0.7
 Release:        1
@@ -11,6 +13,10 @@ Source1001: 	libXv.manifest
 BuildRequires:  pkgconfig(videoproto)
 BuildRequires:  pkgconfig(xext)
 BuildRequires:  pkgconfig(xorg-macros)
+
+%if !%{with x}
+ExclusiveArch:
+%endif
 
 %description
 X.Org X11 libXv runtime library
@@ -28,7 +34,7 @@ X.Org X11 libXv development package
 cp %{SOURCE1001} .
 
 %build
-%reconfigure --disable-static 
+%reconfigure --disable-static
 make %{?_smp_mflags}
 
 %install
@@ -43,7 +49,7 @@ make %{?_smp_mflags}
 %files
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
-%license COPYING 
+%license COPYING
 %{_libdir}/libXv.so.1
 %{_libdir}/libXv.so.1.0.0
 

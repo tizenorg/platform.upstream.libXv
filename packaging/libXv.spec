@@ -1,7 +1,7 @@
 %bcond_with x
 
 Name:           libXv
-Version:        1.0.7
+Version:        1.0.10
 Release:        1
 License:        MIT
 Summary:        Xvideo extension library
@@ -34,7 +34,7 @@ X.Org X11 libXv development package
 cp %{SOURCE1001} .
 
 %build
-%reconfigure --disable-static
+%autogen --disable-static
 make %{?_smp_mflags}
 
 %install
